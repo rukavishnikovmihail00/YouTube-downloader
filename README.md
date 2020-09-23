@@ -6,3 +6,6 @@ This is a desktop application that can rapidly download the video from YT to the
 2) Choose the quality
 3) Video downloads to the $AppFolder/downloads
 4) Press "Скачать" to start a downloading
+
+# Important
+The project is still in the process, so it may not work properly when you try to do something unexpected:)
