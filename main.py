@@ -2,6 +2,11 @@ from tkinter import *
 from tkinter.ttk import Combobox 
 import pytube
 
+def progressCheck(stream, chunk = bytes,  remaining = int):
+    #Gets the percentage of the file that has been downloaded.
+    percent = (100*(file_size-remaining))/file_size
+    print("{:00.0f}% ".format(percent))
+
 
 def download(quality, streams_list):
     btn_down.destroy()
@@ -18,6 +23,9 @@ def download(quality, streams_list):
         if video.resolution==quality:
             temp = video
             break
+    global file_size
+    file_size = temp.filesize
+    
     temp.download('downloads')
     
 
@@ -28,7 +36,7 @@ def clicked():
     
     # https://www.youtube.com/watch?v=Joq6QU9Fm3Y
     try:
-        video = pytube.YouTube(res)
+        video = pytube.YouTube(res, on_progress_callback=progressCheck)
         name = video.title
         videos = video.streams.filter(progressive=True).all()
     except:
