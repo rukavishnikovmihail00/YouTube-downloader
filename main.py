@@ -1,18 +1,41 @@
 from tkinter import *
-from tkinter.ttk import Combobox 
+from tkinter.ttk import Combobox, Progressbar
 import pytube
+import time
+
+
+def donothing():
+    pass
+# https://www.youtube.com/watch?v=dSVpA7i-9Pk
+
+def getHelp():
+    print("HELP")
+
+def getInfo():
+    print("INFO")
+
+
 
 def progressCheck(stream, chunk = bytes,  remaining = int):
     #Gets the percentage of the file that has been downloaded.
     percent = (100*(file_size-remaining))/file_size
-    print("{:00.0f}% ".format(percent))
+    print(percent)
+    if percent > 99.9:
+        download_label = Label(window, text="Видео загружено!", font=("Arial", 18), background='#00a1db')
+        download_label.place(x=225, y=100)
+        dl_status.destroy()
+        window.update()
+    
 
 
 def download(quality, streams_list):
     btn_down.destroy()
+    lbl_video.destroy()
+    lbl_info.destroy()
     combo.destroy()
-    lbl = Label(window, text="Видео загружается", font=("Arial Bold", 10))
-    lbl.grid(column=1, row=9)
+    global dl_status
+    dl_status = Label(window, text="Видео загружается...", font=("Arial", 18), background='#00a1db')
+    dl_status.place(x=225, y=100)
     window.update()
 
     quality = str(quality) + 'p'
@@ -26,6 +49,7 @@ def download(quality, streams_list):
     global file_size
     file_size = temp.filesize
     
+
     temp.download('downloads')
     
 
@@ -41,8 +65,9 @@ def clicked():
         videos = video.streams.filter(progressive=True).all()
     except:
         #print("Некорректная ссылка")
-        error_message = Label(window, text="Некорректная ссылка", font=("Arial Bold",10))
-        error_message.grid(column=1, row=10)
+        global error_message
+        error_message = Label(window, text="Некорректная ссылка", font=("Arial", 14), background='#00a1db')
+        error_message.place(x=230, y=100)
         window.update()
         return 0
     
@@ -62,37 +87,60 @@ def clicked():
         current = int(current.replace('p',''))
         res_list.append(current)
     
-    lbl = Label(window, text=name, font=("Arial Bold", 10))
-    lbl.grid(column=1, row=6)
+    global lbl_info
+    lbl_info = Label(window, text="Вы планируете загрузить:", background='#00a1db')
+    lbl_info.place(x=5,y=5)
+    global lbl_video
+    lbl_video = Label(window, text=name, font=("Helvetica", 12), background='#54fa2a')
+    lbl_video.place(x=5,y=30)
 
     global btn_down, combo
     combo = Combobox(window)  
     combo['values'] = res_list  
     combo.current(0)
-    combo.grid(column=1, row=7)
+    combo.place(x=260, y=70)
     print(res_list_p)
     
     btn_down = Button(window, text="Скачать", command=lambda: download(combo.get(), streams_list))
-    btn_down.grid(column=1,row=8)
+    btn_down.place(x=310, y=170)
     txt.destroy()
     btn.destroy()
+    if error_message != 13:
+        error_message.destroy()
     window.update()
 
-    
     
 window = Tk()
 window.resizable(height = False, width = False)
 window.title("YouTube Downloader")
-window.geometry('600x250') 
+window.geometry('660x250') 
+window.configure(background='#00a1db')
 
 
-btn = Button(window, text="Начать", command=clicked)
-btn.grid(column=1, row=2) 
+menubar = Menu(window)
+filemenu = Menu(menubar, tearoff=0)
+filemenu.add_command(label="New", command=donothing)
+filemenu.add_command(label="Open", command=donothing)
+filemenu.add_command(label="Save", command=donothing)
+filemenu.add_separator()
+filemenu.add_command(label="Exit", command=donothing)
+menubar.add_cascade(label="File", menu=filemenu)
+
+helpmenu = Menu(menubar, tearoff=0)
+helpmenu.add_command(label="Помощь", command=getHelp)
+helpmenu.add_command(label="Об авторе", command=getInfo)
+menubar.add_cascade(label="Информация", menu=helpmenu)
+
+window.config(menu=menubar)
+
+error_message = 13
+file_img = PhotoImage(file="buttons/start.png")
+btn = Button(window, text="Начать",image=file_img, command=clicked)
+btn.place(x=310, y=140)
 
 
-txt = Entry(window,width=100)  
-txt.grid(column=1, row=0)
-
+txt = Entry(window,width=60) 
+txt.place(x=150,y=60)
 
 
 window.mainloop()
