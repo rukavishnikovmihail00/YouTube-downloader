@@ -33,6 +33,7 @@ def download(quality, streams_list):
     lbl_video.destroy()
     lbl_info.destroy()
     combo.destroy()
+    lbl_quality.destroy()
     global dl_status
     dl_status = Label(window, text="Видео загружается...", font=("Arial", 18), background='#00a1db')
     dl_status.place(x=225, y=100)
@@ -94,15 +95,17 @@ def clicked():
     lbl_video = Label(window, text=name, font=("Helvetica", 12), background='#54fa2a')
     lbl_video.place(x=5,y=30)
 
-    global btn_down, combo
+    global btn_down, combo, lbl_quality
+    lbl_quality = Label(window, text="Качество:", background='#00a1db')
+    lbl_quality.place(x=260, y=60)
     combo = Combobox(window)  
     combo['values'] = res_list  
     combo.current(0)
-    combo.place(x=260, y=70)
+    combo.place(x=260, y=80)
     print(res_list_p)
     
-    btn_down = Button(window, text="Скачать", command=lambda: download(combo.get(), streams_list))
-    btn_down.place(x=310, y=170)
+    btn_down = Button(window, image=file_img_dl,bd=0, command=lambda: download(combo.get(), streams_list))
+    btn_down.place(x=256, y=160)
     txt.destroy()
     btn.destroy()
     if error_message != 13:
@@ -134,9 +137,11 @@ menubar.add_cascade(label="Информация", menu=helpmenu)
 window.config(menu=menubar)
 
 error_message = 13
-file_img = PhotoImage(file="buttons/start.png")
-btn = Button(window, text="Начать",image=file_img, command=clicked)
-btn.place(x=310, y=140)
+file_img = PhotoImage(file="buttons/start.gif")
+global file_img_dl
+file_img_dl = PhotoImage(file="buttons/download.png")
+btn = Button(window, text="Начать",image=file_img, bd=0, command=clicked)
+btn.place(x=258, y=140)
 
 
 txt = Entry(window,width=60) 
