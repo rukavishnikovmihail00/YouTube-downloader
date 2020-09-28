@@ -2,17 +2,93 @@ from tkinter import *
 from tkinter.ttk import Combobox, Progressbar
 import pytube
 import time
+import os.path
+import webbrowser
+
+def ifFoundTheBug():
+    window_bug = Toplevel(window)  
+    window_bug.iconbitmap("buttons/icon.ico")  
+    window_bug.resizable(height = False, width = False)
+    window_bug.title("Здесь еще и баги есть?")
+    window_bug.geometry('650x140') 
+    window_bug.configure(background='#00a1db')
+
+    text_help = Text(window_bug, wrap=WORD, font=("Arial", 16), background='#54fa2a')
+    
+    text_help.insert(END, " Если Вы нашли баг или любую ошибку в приложении,\n")
+    text_help.insert(END, " свяжитесь со мной через вкладку Информация -> Об авторе\n\n")
+    text_help.insert(END, " Любая помощь в поимке багов приветствуется:)")
+    text_help.configure(state='disabled')
+    text_help.place(x=0, y=0)
 
 
-def donothing():
-    pass
+
+def donate():
+    window_don = Toplevel(window) 
+    window_don.iconbitmap("buttons/icon.ico")   
+    window_don.resizable(height = False, width = False)
+    window_don.title("Поблагодарить")
+    window_don.geometry('650x140') 
+    window_don.configure(background='#00a1db')
+
+    text_help = Text(window_don, wrap=WORD, font=("Arial", 20), background='#54fa2a')
+    
+    text_help.insert(END, " Вы можете поблагодарить автора за работу тут:\n\n")
+    text_help.insert(END, " QIWI, Сбер: +79290446585\n\n")
+    text_help.configure(state='disabled')
+    text_help.place(x=0, y=0)
+
+def openLink(event):    
+    webbrowser.open_new(event.widget.cget("text"))
+
+def quitProgram():
+    window.destroy()
+    
 # https://www.youtube.com/watch?v=dSVpA7i-9Pk
 
 def getHelp():
-    print("HELP")
+    window_help = Toplevel(window)    
+    window_help.iconbitmap("buttons/icon.ico")
+    window_help.resizable(height = False, width = False)
+    window_help.title("Справка")
+    window_help.geometry('560x200') 
+    window_help.configure(background='#00a1db')
 
+    text_help = Text(window_help, wrap=WORD, font=("Arial", 16), background='#54fa2a')
+    
+    text_help.insert(END, " Как пользоваться приложением:\n\n")
+    text_help.insert(END, " 1) Найдите видео на YouTube и скопируйте ссылку\n\n")
+    text_help.insert(END, " 2) Вставьте ссылку в поле и нажмите кнопку START\n\n")
+    text_help.insert(END, " 3) Выберите качество и нажмите DOWNLOAD")
+    text_help.configure(state='disabled')
+    text_help.place(x=0, y=0)
+
+    
 def getInfo():
-    print("INFO")
+    window_info = Toplevel(window)    
+    window_info.iconbitmap("buttons/icon.ico")
+    window_info.resizable(height = False, width = False)
+    window_info.title("Об авторе")
+    window_info.geometry('500x350') 
+    window_info.configure(background='#00a1db')
+
+    text_help = Text(window_info, wrap=WORD, font=("Arial", 16), background='#54fa2a')
+    
+    text_help.insert(END, " Связаться со мной:\n\n")
+    text_help.insert(END, " [VK] - \n\n")
+    lbl_vk = Label(window_info, text="vk.com/rukavishnikov_mishka", font=("Arial", 16), background='#54fa2a')
+    lbl_vk.place(x=65, y = 48)
+    lbl_vk.bind("<Button-1>", openLink)
+    text_help.insert(END, " [E-mail] - rukavishnikovmihail00@yandex.ru\n\n\n")
+    text_help.insert(END, " Github:\n\n\n\n\n")
+    lbl_git = Label(window_info, text="github.com/rukavishnikovmihail00", font=("Arial", 16), background='#54fa2a')
+    lbl_git.place(x=8, y = 196)
+    lbl_git.bind("<Button-2>", openLink)
+    
+    text_help.insert(END, " Instagram:\n")
+    text_help.insert(END, " @rukavishn1kov")
+    text_help.configure(state='disabled')
+    text_help.place(x=0, y=0)
 
 
 
@@ -88,6 +164,7 @@ def clicked():
         current = int(current.replace('p',''))
         res_list.append(current)
     
+    
     global lbl_info
     lbl_info = Label(window, text="Вы планируете загрузить:", background='#00a1db')
     lbl_info.place(x=5,y=5)
@@ -114,6 +191,7 @@ def clicked():
 
     
 window = Tk()
+window.iconbitmap("buttons/icon.ico")
 window.resizable(height = False, width = False)
 window.title("YouTube Downloader")
 window.geometry('660x250') 
@@ -122,12 +200,11 @@ window.configure(background='#00a1db')
 
 menubar = Menu(window)
 filemenu = Menu(menubar, tearoff=0)
-filemenu.add_command(label="New", command=donothing)
-filemenu.add_command(label="Open", command=donothing)
-filemenu.add_command(label="Save", command=donothing)
+filemenu.add_command(label="Поблагодарить", command=donate)
+filemenu.add_command(label="Если нашли баг", command=ifFoundTheBug)
 filemenu.add_separator()
-filemenu.add_command(label="Exit", command=donothing)
-menubar.add_cascade(label="File", menu=filemenu)
+filemenu.add_command(label="Exit", command=quitProgram)
+menubar.add_cascade(label="Функции", menu=filemenu)
 
 helpmenu = Menu(menubar, tearoff=0)
 helpmenu.add_command(label="Помощь", command=getHelp)
