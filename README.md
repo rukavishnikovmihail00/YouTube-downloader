@@ -7,7 +7,7 @@ To check out the application please download it from the following link: https:/
 1) Enter the URL to the video you need to download
 2) Choose the quality
 3) Video downloads to the $AppFolder/downloads
-4) Press "Скачать" to start a downloading
+4) Press "DOWNLOAD" to start a downloading
 
 # Important
 You can encounter a problem that you cannot paste a link you have just copied.
